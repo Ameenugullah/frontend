@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    @apply bg-cream-50 text-charcoal-800 font-body;
+    -webkit-font-smoothing: antialiased;
+  }
+  input, textarea, select {
+    font-size: 16px; /* prevent iOS zoom */
+  }
+}
+
+@layer components {
+  /* Buttons */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2
+           bg-charcoal-900 text-cream-50 font-body font-medium
+           px-7 py-3 text-sm tracking-wide
+           transition-all duration-200
+           hover:bg-charcoal-800 active:scale-[0.98];
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2
+           border border-charcoal-800 text-charcoal-800 font-body font-medium
+           px-7 py-3 text-sm tracking-wide
+           transition-all duration-200
+           hover:bg-charcoal-800 hover:text-cream-50 active:scale-[0.98];
+  }
+  .btn-blush {
+    @apply inline-flex items-center justify-center gap-2
+           bg-blush-500 text-white font-body font-medium
+           px-7 py-3 text-sm tracking-wide
+           transition-all duration-200
+           hover:bg-blush-600 active:scale-[0.98];
+  }
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2
+           bg-gold-500 text-white font-body font-medium
+           px-7 py-3 text-sm tracking-wide
+           transition-all duration-200
+           hover:bg-gold-600 active:scale-[0.98];
+  }
+
+  /* Inputs */
+  .input-field {
+    @apply w-full border border-sand-200 bg-white
+           font-body text-sm text-charcoal-800
+           px-4 py-3
+           focus:outline-none focus:border-charcoal-700
+           placeholder-sand-300
+           transition-colors duration-200;
+  }
+
+  /* Tags */
+  .tag {
+    @apply font-body text-xs tracking-[0.2em] uppercase text-blush-500;
+  }
+  .tag-gold {
+    @apply font-body text-xs tracking-[0.2em] uppercase text-gold-500;
+  }
+
+  /* Section heading */
+  .section-heading {
+    @apply font-display text-3xl sm:text-4xl md:text-5xl text-charcoal-800 font-light;
+  }
+
+  /* Hero overlay */
+  .hero-overlay {
+    background: linear-gradient(to right, rgba(250,248,245,0.85) 40%, transparent 100%);
+  }
+  .hero-overlay-dark {
+    background: linear-gradient(to right, rgba(15,24,41,0.85) 40%, transparent 100%);
+  }
+
+  /* Glass card */
+  .glass {
+    @apply bg-white/10 backdrop-blur-sm border border-white/20;
+  }
+
+  /* Scroll reveal */
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Product card image */
+  .product-card-image {
+    transition: transform 0.5s ease;
+  }
+  .product-card-image:hover {
+    transform: scale(1.05);
+  }
+
+  /* Badge */
+  .badge {
+    @apply absolute top-3 left-3 font-body text-xs font-medium px-2 py-0.5 z-10;
+  }
+
+  /* Divider */
+  .divider {
+    @apply w-12 h-px bg-blush-500 my-4;
+  }
+}
+
+/* Hide scrollbar */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
