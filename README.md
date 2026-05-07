@@ -1,10 +1,10 @@
-# Nura Bahar — Frontend (Railway)
+# Nura Bahar — Frontend (Render)
 
-React + Vite + TailwindCSS. Served via nginx on Railway.
+React + Vite + TailwindCSS. Deployed as a Static Site on Render.
 
 ---
 
-## Deploy to Railway
+## Deploy to Render
 
 ### Step 1 — Push to GitHub
 ```bash
@@ -16,33 +16,27 @@ git remote add origin https://github.com/YOUR_USERNAME/nurabahar-frontend.git
 git push -u origin main
 ```
 
-### Step 2 — Create Railway project
-1. Go to https://railway.app
-2. Click **New Project → Deploy from GitHub repo**
-3. Select `nurabahar-frontend`
-4. Railway detects the Dockerfile automatically
+### Step 2 — Create Render Static Site
+1. Go to https://render.com
+2. Click **New → Static Site**
+3. Connect your GitHub repo → select `nurabahar-frontend`
+4. Render auto-detects `render.yaml`
 
-### Step 3 — Set environment variable (CRITICAL)
-Before deploying, you MUST set your backend URL:
+### Step 3 — Set environment variables (CRITICAL)
+In Render dashboard → your service → **Environment** → add:
 
-1. In Railway, click your frontend service
-2. Go to **Variables** tab
-3. Add:
-   - Key:   `VITE_PB_URL`
-   - Value: `https://your-backend-railway-url.up.railway.app`
+| Key | Value |
+|-----|-------|
+| `VITE_PB_URL` | `https://nurabahar-backend.onrender.com` |
+| `VITE_PAYSTACK_PUBLIC_KEY` | `pk_live_xxxxxxxxxxxxxxxxxxxx` |
 
-Or update `railway.toml` directly:
-```toml
-[build.args]
-VITE_PB_URL = "https://your-actual-backend-url.up.railway.app"
+### Step 4 — Deploy
+Click **Deploy** — Render runs `npm install && npm run build` and serves `dist/`
+
+Your store will be live at:
 ```
-
-### Step 4 — Generate a domain
-1. Go to **Settings → Networking → Generate Domain**
-2. Your store is live at:
-   ```
-   https://nurabahar-frontend-production.up.railway.app
-   ```
+https://nurabahar-frontend.onrender.com
+```
 
 ---
 
@@ -58,15 +52,15 @@ Make sure PocketBase is running locally first:
 ./pocketbase serve   # → http://127.0.0.1:8090
 ```
 
+Create `frontend/.env.local`:
+```
+VITE_PB_URL=http://127.0.0.1:8090
+VITE_PAYSTACK_PUBLIC_KEY=pk_test_xxxxxxxxxxxxxxxxxxxx
+```
+
 ---
 
 ## Admin Dashboard
-- URL: https://your-frontend-url.up.railway.app/admin
+- URL: https://nurabahar-frontend.onrender.com/admin
 - Email: admin@nurabahar.ng
 - Password: NuraBahar2025!
-
----
-
-## Add Product Images
-Place images in `public/images/` before building.
-Filenames must match what's referenced in `src/data/products.js`.
