@@ -33,6 +33,7 @@ export default function Navbar() {
     { to: '/', label: 'Home' },
     { to: '/products', label: 'Women' },
     { to: '/products?gender=men', label: 'Men' },
+    { to: '/products?category=Perfumes', label: 'Perfumes' },
     { to: '/faq', label: 'FAQ' },
   ];
 

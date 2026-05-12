@@ -33,9 +33,9 @@ export default function ProductDetail() {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-cream-50 pt-24 flex items-center justify-center">
-        <div className="text-center px-6">
-          <h2 className="font-display text-3xl text-charcoal-800 font-light mb-4">Product not found</h2>
+      <div className="flex items-center justify-center min-h-screen pt-24 bg-cream-50">
+        <div className="px-6 text-center">
+          <h2 className="mb-4 text-3xl font-light font-display text-charcoal-800">Product not found</h2>
           <Link to="/products" className="btn-primary">Back to Shop</Link>
         </div>
       </div>
@@ -55,35 +55,35 @@ export default function ProductDetail() {
   const related = allProducts.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4);
 
   return (
-    <div className="min-h-screen bg-cream-50 pt-24">
-      <div className="max-w-7xl mx-auto px-6 py-10">
+    <div className="min-h-screen pt-24 bg-cream-50">
+      <div className="px-6 py-10 mx-auto max-w-7xl">
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 font-body text-xs text-charcoal-700/50 mb-8">
-          <Link to="/" className="hover:text-charcoal-800 transition-colors">Home</Link>
+        <nav className="flex items-center gap-2 mb-8 text-xs font-body text-charcoal-700/50">
+          <Link to="/" className="transition-colors hover:text-charcoal-800">Home</Link>
           <span>/</span>
-          <Link to="/products" className="hover:text-charcoal-800 transition-colors">Shop</Link>
+          <Link to="/products" className="transition-colors hover:text-charcoal-800">Shop</Link>
           <span>/</span>
           <span className="text-charcoal-800">{product.name}</span>
         </nav>
 
-        <div className="grid lg:grid-cols-2 gap-12 mb-20">
+        <div className="grid gap-12 mb-20 lg:grid-cols-2">
           {/* Images */}
           <div>
             <div className="relative overflow-hidden bg-sand-100 aspect-[4/5] mb-3">
               <img src={images[imgIdx]} alt={product.name}
-                className="w-full h-full object-cover"
+                className="object-cover w-full h-full"
                 onError={e=>{e.target.onerror=null;e.target.src='https://images.unsplash.com/photo-1558171813-5e3d4e0c64ae?w=800&q=80';}} />
               {product.badge && (
-                <span className="badge bg-blush-500 text-white font-body text-xs px-2 py-1">{product.badge}</span>
+                <span className="px-2 py-1 text-xs text-white badge bg-blush-500 font-body">{product.badge}</span>
               )}
               {images.length > 1 && (
                 <>
                   <button onClick={() => setImgIdx(i => Math.max(0, i - 1))}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-white/80 hover:bg-white flex items-center justify-center shadow-soft transition-all">
+                    className="absolute flex items-center justify-center transition-all -translate-y-1/2 left-3 top-1/2 w-9 h-9 bg-white/80 hover:bg-white shadow-soft">
                     <ChevronLeft size={18} />
                   </button>
                   <button onClick={() => setImgIdx(i => Math.min(images.length - 1, i + 1))}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-white/80 hover:bg-white flex items-center justify-center shadow-soft transition-all">
+                    className="absolute flex items-center justify-center transition-all -translate-y-1/2 right-3 top-1/2 w-9 h-9 bg-white/80 hover:bg-white shadow-soft">
                     <ChevronRight size={18} />
                   </button>
                 </>
@@ -94,7 +94,7 @@ export default function ProductDetail() {
                 {images.map((img, i) => (
                   <button key={i} onClick={() => setImgIdx(i)}
                     className={`w-16 h-20 overflow-hidden border-2 transition-all ${imgIdx === i ? 'border-charcoal-800' : 'border-transparent opacity-60 hover:opacity-100'}`}>
-                    <img src={img} alt="" className="w-full h-full object-cover" />
+                    <img src={img} alt="" className="object-cover w-full h-full" />
                   </button>
                 ))}
               </div>
@@ -103,30 +103,30 @@ export default function ProductDetail() {
 
           {/* Info */}
           <div>
-            <p className="tag mb-2">{product.category}</p>
-            <h1 className="font-display text-3xl sm:text-4xl text-charcoal-800 font-light italic mb-4 leading-tight">{product.name}</h1>
+            <p className="mb-2 tag">{product.category}</p>
+            <h1 className="mb-4 text-3xl italic font-light leading-tight font-display sm:text-4xl text-charcoal-800">{product.name}</h1>
             <div className="flex items-center gap-4 mb-5">
               <StarRating rating={product.rating} />
-              <span className="font-body text-xs text-charcoal-700/50">{product.reviews} reviews</span>
+              <span className="text-xs font-body text-charcoal-700/50">{product.reviews} reviews</span>
             </div>
             <div className="flex items-baseline gap-3 mb-6">
-              <span className="font-display text-3xl text-charcoal-800 font-light">
+              <span className="text-3xl font-light font-display text-charcoal-800">
                 {`₦${product.price.toLocaleString('en-NG')}`}
               </span>
               {product.originalPrice && (
-                <span className="font-body text-lg text-charcoal-700/40 line-through">
+                <span className="text-lg line-through font-body text-charcoal-700/40">
                   {`₦${product.originalPrice.toLocaleString('en-NG')}`}
                 </span>
               )}
             </div>
-            <p className="font-body text-sm text-charcoal-700/70 leading-relaxed mb-8">{product.description}</p>
+            <p className="mb-8 text-sm leading-relaxed font-body text-charcoal-700/70">{product.description}</p>
 
             {/* Colors */}
             {product.colors?.length > 0 && product.colors[0] !== 'One Size' && (
               <div className="mb-6">
                 <div className="flex items-center justify-between mb-3">
-                  <p className="font-body text-xs tracking-widest uppercase text-charcoal-700/70">Colour</p>
-                  {selectedColor && <p className="font-body text-xs text-charcoal-800">{selectedColor}</p>}
+                  <p className="text-xs tracking-widest uppercase font-body text-charcoal-700/70">Colour</p>
+                  {selectedColor && <p className="text-xs font-body text-charcoal-800">{selectedColor}</p>}
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {product.colors.map(color => (
@@ -136,14 +136,14 @@ export default function ProductDetail() {
                     </button>
                   ))}
                 </div>
-                {colorError && <p className="font-body text-xs text-blush-500 mt-2">Please select a colour</p>}
+                {colorError && <p className="mt-2 text-xs font-body text-blush-500">Please select a colour</p>}
               </div>
             )}
 
             {/* Sizes */}
             {product.sizes?.length > 0 && product.sizes[0] !== 'One Size' && (
               <div className="mb-6">
-                <p className="font-body text-xs tracking-widest uppercase text-charcoal-700/70 mb-3">Size</p>
+                <p className="mb-3 text-xs tracking-widest uppercase font-body text-charcoal-700/70">Size</p>
                 <div className="flex flex-wrap gap-2">
                   {product.sizes.map(size => (
                     <button key={size} onClick={() => { setSelectedSize(size); setSizeError(false); }}
@@ -152,7 +152,7 @@ export default function ProductDetail() {
                     </button>
                   ))}
                 </div>
-                {sizeError && <p className="font-body text-xs text-blush-500 mt-2">Please select a size</p>}
+                {sizeError && <p className="mt-2 text-xs font-body text-blush-500">Please select a size</p>}
               </div>
             )}
 
@@ -160,12 +160,12 @@ export default function ProductDetail() {
             <div className="flex items-center gap-4 mb-6">
               <div className="flex items-center border border-sand-200">
                 <button onClick={() => setQty(q => Math.max(1, q - 1))}
-                  className="w-10 h-12 flex items-center justify-center hover:bg-sand-100 transition-colors">
+                  className="flex items-center justify-center w-10 h-12 transition-colors hover:bg-sand-100">
                   <Minus size={14} />
                 </button>
-                <span className="w-12 h-12 flex items-center justify-center font-body text-sm font-medium border-x border-sand-200">{qty}</span>
+                <span className="flex items-center justify-center w-12 h-12 text-sm font-medium font-body border-x border-sand-200">{qty}</span>
                 <button onClick={() => setQty(q => q + 1)}
-                  className="w-10 h-12 flex items-center justify-center hover:bg-sand-100 transition-colors">
+                  className="flex items-center justify-center w-10 h-12 transition-colors hover:bg-sand-100">
                   <Plus size={14} />
                 </button>
               </div>
@@ -174,13 +174,13 @@ export default function ProductDetail() {
                 <ShoppingBag size={17} />
                 {added ? '✓ Added to Cart!' : `Add to Cart — ₦${(product.price * qty).toLocaleString('en-NG')}`}
               </button>
-              <button className="w-12 h-12 border border-sand-200 flex items-center justify-center text-charcoal-700/50 hover:text-blush-500 hover:border-blush-500 transition-all">
+              <button className="flex items-center justify-center w-12 h-12 transition-all border border-sand-200 text-charcoal-700/50 hover:text-blush-500 hover:border-blush-500">
                 <Heart size={18} />
               </button>
             </div>
 
             {/* Delivery info */}
-            <div className="border border-sand-200 divide-y divide-sand-200">
+            <div className="border divide-y border-sand-200 divide-sand-200">
               {[
                 { icon: Truck, label: 'Free delivery within Kano', sub: 'Nationwide from ₦2,500' },
                 { icon: RotateCcw, label: '7-day returns', sub: 'Via WhatsApp or Instagram DM' },
@@ -189,8 +189,8 @@ export default function ProductDetail() {
                 <div key={label} className="flex items-center gap-4 px-4 py-3">
                   <Icon size={17} className="text-blush-500 shrink-0" />
                   <div>
-                    <p className="font-body text-xs font-medium text-charcoal-800">{label}</p>
-                    <p className="font-body text-xs text-charcoal-700/50">{sub}</p>
+                    <p className="text-xs font-medium font-body text-charcoal-800">{label}</p>
+                    <p className="text-xs font-body text-charcoal-700/50">{sub}</p>
                   </div>
                 </div>
               ))}
@@ -202,20 +202,20 @@ export default function ProductDetail() {
         {related.length > 0 && (
           <div>
             <div className="flex items-center justify-between mb-8">
-              <h2 className="font-display text-2xl text-charcoal-800 font-light italic">You may also like</h2>
-              <Link to="/products" className="font-body text-sm text-blush-500 hover:text-blush-600 transition-colors">View all →</Link>
+              <h2 className="text-2xl italic font-light font-display text-charcoal-800">You may also like</h2>
+              <Link to="/products" className="text-sm transition-colors font-body text-blush-500 hover:text-blush-600">View all →</Link>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 md:gap-5">
               {related.map(p => (
-                <Link key={p.id} to={`/products/${p.id}`} className="group block bg-white hover:shadow-card transition-shadow">
+                <Link key={p.id} to={`/products/${p.id}`} className="block transition-shadow bg-white group hover:shadow-card">
                   <div className="aspect-[3/4] overflow-hidden bg-sand-100">
                     <img src={p.images?.[0]} alt={p.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
                       onError={e=>{e.target.onerror=null;e.target.src='https://images.unsplash.com/photo-1558171813-5e3d4e0c64ae?w=400&q=60';}} />
                   </div>
                   <div className="p-3">
-                    <p className="font-display text-sm text-charcoal-800 font-light leading-snug">{p.name}</p>
-                    <p className="font-body text-xs font-semibold text-charcoal-800 mt-1">{`₦${p.price.toLocaleString('en-NG')}`}</p>
+                    <p className="text-sm font-light leading-snug font-display text-charcoal-800">{p.name}</p>
+                    <p className="mt-1 text-xs font-semibold font-body text-charcoal-800">{`₦${p.price.toLocaleString('en-NG')}`}</p>
                   </div>
                 </Link>
               ))}

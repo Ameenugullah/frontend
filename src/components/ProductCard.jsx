@@ -11,72 +11,65 @@ const badgeColors = {
   Premium:    'bg-navy-800 text-cream-50',
 };
 
-// Returns true if the product was created within the last 20 days
-function isNewProduct(product) {
-  const created = product.created || product.createdAt || product.dateAdded;
-  if (!created) return false;
-  const uploadDate = new Date(created);
-  if (isNaN(uploadDate.getTime())) return false;
-  const diffMs   = Date.now() - uploadDate.getTime();
-  const diffDays = diffMs / (1000 * 60 * 60 * 24);
-  return diffDays <= 20;
-}
+// Fallback for any image that 404s — covers both local /images/ and external URLs
+const FALLBACK = 'https://images.unsplash.com/photo-1558171813-5e3d4e0c64ae?w=600&q=80';
 
 export default function ProductCard({ product }) {
   const { addToCart } = useCart();
 
-  // Show "New" badge only if the product was uploaded within 20 days,
-  // regardless of whatever badge was manually set in the data.
-  const badge = isNewProduct(product) ? 'New' : product.badge === 'New' ? null : product.badge;
-
   const handleQuickAdd = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    const size  = product.sizes?.[0]  || 'One Size';
+    const size  = product.sizes?.[0] || 'One Size';
     const color = product.colors?.[0] || '';
     addToCart(product, size, color, 1);
   };
 
-  return (
-    <Link to={`/products/${product.id}`}
-      className="relative block overflow-hidden transition-shadow duration-300 bg-white group hover:shadow-card">
+  // product.images paths are /images/... which resolve from public/images/
+  const imageSrc = product.images?.[0] || FALLBACK;
 
+  return (
+    <Link
+      to={`/products/${product.id}`}
+      className="relative block overflow-hidden transition-shadow duration-300 bg-white group hover:shadow-card"
+    >
       {/* Image */}
       <div className="relative overflow-hidden bg-sand-100 aspect-[3/4]">
         <img
-          src={product.images?.[0]}
+          src={imageSrc}
           alt={product.name}
           className="object-cover w-full h-full product-card-image"
-          onError={e => {
-            if (!e.target.src.endsWith('.svg')) {
-              e.target.onerror = null;
-              e.target.src = 'https://images.unsplash.com/photo-1558171813-5e3d4e0c64ae?w=600&q=80';
-            }
-          }}
           loading="lazy"
+          onError={e => { e.target.onerror = null; e.target.src = FALLBACK; }}
         />
 
         {/* Badge */}
-        {badge && (
-          <span className={`badge font-body text-xs font-medium px-2 py-1 ${badgeColors[badge] || 'bg-charcoal-800 text-cream-50'}`}>
-            {badge}
+        {product.badge && (
+          <span className={`badge font-body text-xs font-medium px-2 py-1 ${badgeColors[product.badge] || 'bg-charcoal-800 text-cream-50'}`}>
+            {product.badge}
           </span>
         )}
 
         {/* Hover overlay */}
         <div className="absolute inset-0 transition-all duration-300 bg-charcoal-900/0 group-hover:bg-charcoal-900/10" />
+
+        {/* Quick actions — slide up on hover */}
         <div className="absolute bottom-0 left-0 right-0 flex gap-2 p-3 transition-transform duration-300 translate-y-full group-hover:translate-y-0">
-          <button onClick={handleQuickAdd}
-            className="flex-1 bg-white text-charcoal-800 font-body text-xs font-medium py-2.5 hover:bg-charcoal-800 hover:text-white transition-colors duration-200 flex items-center justify-center gap-1.5">
+          <button
+            onClick={handleQuickAdd}
+            className="flex-1 bg-white text-charcoal-800 font-body text-xs font-medium py-2.5 hover:bg-charcoal-800 hover:text-white transition-colors duration-200 flex items-center justify-center gap-1.5"
+          >
             <ShoppingBag size={13} /> Quick Add
           </button>
-          <button onClick={e => { e.preventDefault(); }}
-            className="flex items-center justify-center w-10 transition-colors duration-200 bg-white text-charcoal-800 hover:bg-blush-500 hover:text-white">
+          <button
+            onClick={e => { e.preventDefault(); }}
+            className="flex items-center justify-center w-10 transition-colors duration-200 bg-white text-charcoal-800 hover:bg-blush-500 hover:text-white"
+          >
             <Heart size={14} />
           </button>
         </div>
 
-        {/* Sale % pill */}
+        {/* Sale badge */}
         {product.originalPrice && (
           <span className="absolute top-3 right-3 bg-blush-500 text-white font-body text-xs px-2 py-0.5">
             -{Math.round((1 - product.price / product.originalPrice) * 100)}%
